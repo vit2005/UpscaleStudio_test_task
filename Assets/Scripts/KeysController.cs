@@ -25,6 +25,8 @@ public class KeyController : MonoBehaviour
             var rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
             RegisterKey(Instantiate(keyPrefab, position, rotation));
         }
+        freePlaces.RemoveRange(0, 10);
+        EnemiesController.instance.SpawnEnemies(freePlaces);
     }
 
     public void RegisterKey(GameObject key)
