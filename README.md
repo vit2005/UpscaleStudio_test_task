@@ -1,0 +1,1 @@
+# UpscaleStudio_test_task
