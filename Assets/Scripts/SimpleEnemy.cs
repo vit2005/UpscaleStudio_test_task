@@ -33,6 +33,8 @@ public class SimpleEnemy : MonoBehaviour
                 hit.collider.gameObject == PlayerController.instance.gameObject)
             {
                 SetState(EnemyState.hunt);
+                float speed = PlayerController.instance.IsVisibleToPlayer(transform.position) ? 2f : 1f;
+                transform.position += (direction.normalized) * speed * 0.01f;
             }
             else
             {
