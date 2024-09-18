@@ -6,18 +6,19 @@ using UnityEngine;
 public class KeyItem : MonoBehaviour
 {
     [SerializeField] private GameObject visuals;
-    [SerializeField] private AudioSource audio;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private ParticleSystem destroyParticles;
-    [SerializeField] private Animation animation;
+    [SerializeField] private Animation animationHolder;
     [SerializeField] private string keyDisolveAnimationTitle = "KeyDisolve";
+    [SerializeField] private float delayBeforeDestroy;
 
     public Action OnKeyFinded;
 
     private void OnTriggerEnter(Collider other)
     {
         visuals.SetActive(false);
-        animation.Play(keyDisolveAnimationTitle);
-        audio.Play();
+        animationHolder.Play(keyDisolveAnimationTitle);
+        audioSource.Play();
         destroyParticles.Play();
         OnKeyFinded?.Invoke();
         //KeyController.instance.UnregisterKey(gameObject);
@@ -26,7 +27,7 @@ public class KeyItem : MonoBehaviour
 
     private IEnumerator DestroyDelay()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(delayBeforeDestroy);
         Destroy(gameObject);
     }
 }

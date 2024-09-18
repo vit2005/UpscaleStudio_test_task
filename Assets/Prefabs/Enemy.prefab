@@ -5124,7 +5124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warningDistance: 5
   ps: {fileID: 3869924910692650013}
-  light: {fileID: 3215831464631066762}
+  lightSource: {fileID: 3215831464631066762}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   warningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   huntingColor: {r: 1, g: 0, b: 0, a: 1}

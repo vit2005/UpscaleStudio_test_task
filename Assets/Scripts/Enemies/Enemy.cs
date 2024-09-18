@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float warningDistance = 10.0f;
     [SerializeField] private ParticleSystem ps;
-    [SerializeField] private Light light;
+    [SerializeField] private Light lightSource;
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color warningColor = Color.yellow;
     [SerializeField] private Color huntingColor = Color.red;
@@ -34,15 +34,15 @@ public class Enemy : MonoBehaviour
     {
         if (GameController.instance.paused) return;
 
-        var playerPosition = PlayerController.instance.transform.position;
+        var playerPosition = PlayerCameraHolder.instance.transform.position;
         if (Vector3.Distance(playerPosition, transform.position) < warningDistance)
         {
             var direction = playerPosition - transform.position;
             if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, warningDistance) &&
-                hit.collider.gameObject == PlayerController.instance.gameObject)
+                hit.collider.gameObject == PlayerCameraHolder.instance.gameObject)
             {
                 SetState(EnemyState.hunt);
-                float speed = PlayerController.instance.IsVisibleToPlayer(transform.position) ? 2f : 1f;
+                float speed = PlayerCameraHolder.instance.IsVisibleToPlayer(transform.position) ? 2f : 1f;
                 transform.position += (direction.normalized) * speed * 0.01f;
             }
             else
@@ -68,15 +68,15 @@ public class Enemy : MonoBehaviour
         {
             case EnemyState.calm:
                 main.startColor = defaultColor;
-                light.color = defaultColor;
+                lightSource.color = defaultColor;
                 break;
             case EnemyState.warning:
                 main.startColor = warningColor;
-                light.color = warningColor;
+                lightSource.color = warningColor;
                 break;
             case EnemyState.hunt:
                 main.startColor = huntingColor;
-                light.color = huntingColor;
+                lightSource.color = huntingColor;
                 break;
         }
     }

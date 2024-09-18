@@ -5255,10 +5255,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visuals: {fileID: 8156575367724993097}
-  audio: {fileID: 2475644257938981614}
+  audioSource: {fileID: 2475644257938981614}
   destroyParticles: {fileID: 6440703083875963234}
-  animation: {fileID: 7594635125285766453}
+  animationHolder: {fileID: 7594635125285766453}
   keyDisolveAnimationTitle: KeyDisolve
+  delayBeforeDestroy: 1
 --- !u!111 &7594635125285766453
 Animation:
   m_ObjectHideFlags: 0
@@ -5288,7 +5289,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 29df8e798230e44128d54040c4971b7f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

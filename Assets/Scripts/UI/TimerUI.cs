@@ -13,7 +13,7 @@ public class TimerUI : MonoBehaviour
 
     public void Init()
     {
-        text.text = "00:000";
+        text.text = "0:00:000";
     }
 
     public void StartTimer()
@@ -31,16 +31,9 @@ public class TimerUI : MonoBehaviour
     {
         if (_isPlaying)
         {
-            // Збільшуємо пройдений час
             _time += Time.deltaTime;
-
-            // Конвертуємо пройдений час у TimeSpan
             TimeSpan timeSpan = TimeSpan.FromSeconds(_time);
-
-            // Відображаємо час у форматі SS:MMM
-            text.text = string.Format("{0:00}:{1:000}",
-                                            timeSpan.Seconds,
-                                            timeSpan.Milliseconds);
+            text.text = string.Format("{0:0}:{1:00}:{2:000}", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds);
         }
     }
 }
