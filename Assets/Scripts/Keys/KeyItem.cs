@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +11,16 @@ public class KeyItem : MonoBehaviour
     [SerializeField] private Animation animation;
     [SerializeField] private string keyDisolveAnimationTitle = "KeyDisolve";
 
+    public Action OnKeyFinded;
+
     private void OnTriggerEnter(Collider other)
     {
         visuals.SetActive(false);
         animation.Play(keyDisolveAnimationTitle);
         audio.Play();
         destroyParticles.Play();
-        KeyController.instance.UnregisterKey(gameObject);
+        OnKeyFinded?.Invoke();
+        //KeyController.instance.UnregisterKey(gameObject);
         StartCoroutine(DestroyDelay());
     }
 
