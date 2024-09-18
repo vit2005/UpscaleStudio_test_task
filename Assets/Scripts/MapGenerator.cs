@@ -15,12 +15,12 @@ public class MapGenerator : MonoBehaviour
     public List<Vector3> freePlaces = new List<Vector3>();
     public Action OnGenerationFinished;
 
-    public void GenerateMap()
+    public void GenerateMap(Transform parent)
     {
-        StartCoroutine(GenerateSphereMazeCoroutine());
+        StartCoroutine(GenerateSphereMazeCoroutine(parent));
     }
 
-    IEnumerator GenerateSphereMazeCoroutine()
+    IEnumerator GenerateSphereMazeCoroutine(Transform parent)
     {
         int batchSize = 100; // Кількість об'єктів за один крок
         int counter = 0;
@@ -41,7 +41,7 @@ public class MapGenerator : MonoBehaviour
                         {
                             // Інстанціюємо префаб
                             Vector3 position = new Vector3(x, y, z);
-                            Instantiate(cubePrefab, position, Quaternion.identity);
+                            Instantiate(cubePrefab, position, Quaternion.identity, parent);
                             counter++;
 
                             // Кожного разу, коли досягаємо batchSize, чекаємо наступного кадру

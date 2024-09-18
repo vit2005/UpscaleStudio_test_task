@@ -19,14 +19,14 @@ public class KeyController : MonoBehaviour
         countText.text = keysCount.ToString();
     }
 
-    public void SpawnKeys(List<Vector3> freePlaces)
+    public void SpawnKeys(List<Vector3> freePlaces, Transform parent)
     {
         freePlaces.Shuffle();
         for (int i = 0; i < keysCount; i++)
         {
             var position = new Vector3(freePlaces[i].x, freePlaces[i].y, freePlaces[i].z);
             var rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-            RegisterKey(Instantiate(keyPrefab, position, rotation));
+            RegisterKey(Instantiate(keyPrefab, position, rotation, parent));
         }
         freePlaces.RemoveRange(0, 10);
     }
