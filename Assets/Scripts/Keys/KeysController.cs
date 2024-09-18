@@ -29,7 +29,6 @@ public class KeyController : MonoBehaviour
             RegisterKey(Instantiate(keyPrefab, position, rotation));
         }
         freePlaces.RemoveRange(0, 10);
-        EnemiesController.instance.SpawnEnemies(freePlaces);
     }
 
     public void RegisterKey(GameObject key)

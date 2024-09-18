@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,10 @@ public class MapGenerator : MonoBehaviour
     public float noiseScale = 0.1f; // Масштаб для Perlin Noise
     public float threshold = 0.5f; // Поріг для генерації кубів
 
-    private List<Vector3> freePlaces = new List<Vector3>();
+    public List<Vector3> freePlaces = new List<Vector3>();
+    public Action OnGenerationFinished;
 
-    void Start()
+    public void GenerateMap()
     {
         StartCoroutine(GenerateSphereMazeCoroutine());
     }
@@ -57,8 +59,8 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-
-        KeyController.instance.SpawnKeys(freePlaces);
+        OnGenerationFinished?.Invoke();
+        
     }
 
     private bool CheckPerlinNoize(int x, int y, int z)
