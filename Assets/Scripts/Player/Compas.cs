@@ -12,16 +12,11 @@ public class Compas : MonoBehaviour
         _target = target;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        var nearest = KeyController.instance.GetNearestKey(transform.position);
-        if (nearest == null) nearest = _target;
+        var nearest = KeyController.instance.GetNearestKey(transform.position) ?? _target;
         bool any = nearest != null;
         particles.SetActive(any);
-        if (any)
-        {
-            transform.LookAt(nearest.transform);
-        }
+        if (any) transform.LookAt(nearest.transform);
     }
 }

@@ -8,9 +8,8 @@ public class HealthController : MonoBehaviour
     [SerializeField] private float maxHealth;
 
     private float _currentHealth;
-    public float CurrentHealth => _currentHealth;
 
-    public Action<float> OnHealthChanged;
+    public Action<float> OnHealthChanged; // in percentage
 
     public void Init()
     {

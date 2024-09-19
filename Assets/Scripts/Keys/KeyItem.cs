@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyItem : MonoBehaviour
@@ -21,7 +20,6 @@ public class KeyItem : MonoBehaviour
         audioSource.Play();
         destroyParticles.Play();
         OnKeyFinded?.Invoke();
-        //KeyController.instance.UnregisterKey(gameObject);
         StartCoroutine(DestroyDelay());
     }
 

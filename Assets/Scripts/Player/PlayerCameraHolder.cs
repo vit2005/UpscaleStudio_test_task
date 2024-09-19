@@ -14,10 +14,8 @@ public class PlayerCameraHolder : MonoBehaviour
 
     public bool IsVisibleToPlayer(Vector3 pos) 
     {
-        // Convert the point from world space to viewport space
         Vector3 viewportPoint = _camera.WorldToViewportPoint(pos);
 
-        // Check if the point is in front of the camera and within the viewport bounds
         bool isVisible = viewportPoint.z > 0 &&
                          viewportPoint.x >= 0 && viewportPoint.x <= 1 &&
                          viewportPoint.y >= 0 && viewportPoint.y <= 1;

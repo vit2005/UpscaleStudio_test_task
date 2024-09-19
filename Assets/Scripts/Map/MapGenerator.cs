@@ -6,11 +6,11 @@ using UnityEngine.UIElements;
 
 public class MapGenerator : MonoBehaviour
 {
-    public GameObject cubePrefab;
-    public int maxRadius; // Радіус сфери
-    public int minRadius; // Радіус центру сфери
-    public float noiseScale = 0.1f; // Масштаб для Perlin Noise
-    public float threshold = 0.5f; // Поріг для генерації кубів
+    [SerializeField] private GameObject cubePrefab;
+    [SerializeField] private int maxRadius;
+    [SerializeField] private int minRadius;
+    [SerializeField] private float noiseScale = 0.1f;
+    [SerializeField] private float threshold = 0.5f;
 
     public List<Vector3> freePlaces = new List<Vector3>();
     public Action OnGenerationFinished;
@@ -20,9 +20,9 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(GenerateSphereMazeCoroutine(parent));
     }
 
-    IEnumerator GenerateSphereMazeCoroutine(Transform parent)
+    private IEnumerator GenerateSphereMazeCoroutine(Transform parent)
     {
-        int batchSize = 100; // Кількість об'єктів за один крок
+        int batchSize = 100;
         int counter = 0;
 
         for (int x = -maxRadius; x <= maxRadius; x++)
@@ -31,20 +31,16 @@ public class MapGenerator : MonoBehaviour
             {
                 for (int z = -maxRadius; z <= maxRadius; z++)
                 {
-                    // Визначаємо, чи точка належить сфері
                     float distance = x * x + y * y + z * z;
 
                     if (distance <= maxRadius * maxRadius && distance >= minRadius * minRadius)
                     {
-                        // Перевіряємо поріг
                         if (CheckPerlinNoize(x, y, z))
                         {
-                            // Інстанціюємо префаб
                             Vector3 position = new Vector3(x, y, z);
                             Instantiate(cubePrefab, position, Quaternion.identity, parent);
                             counter++;
 
-                            // Кожного разу, коли досягаємо batchSize, чекаємо наступного кадру
                             if (counter >= batchSize)
                             {
                                 counter = 0;
@@ -60,12 +56,10 @@ public class MapGenerator : MonoBehaviour
             }
         }
         OnGenerationFinished?.Invoke();
-        
     }
 
     private bool CheckPerlinNoize(int x, int y, int z)
     {
-        // Обчислюємо Perlin Noise для цієї точки
         float perlinValue1 = Mathf.PerlinNoise(
             (x + maxRadius) * noiseScale,
             (y + maxRadius) * noiseScale
@@ -79,13 +73,8 @@ public class MapGenerator : MonoBehaviour
             (x + maxRadius) * noiseScale
         );
 
-        // Комбінуємо значення шуму
         float combinedPerlinValue = (perlinValue1 + perlinValue2 + perlinValue3) / 3f;
 
-        // Перевіряємо поріг
         return combinedPerlinValue > threshold;
     }
-
-    
-
 }

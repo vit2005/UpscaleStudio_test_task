@@ -19,20 +19,27 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float warningDistance = 10.0f;
     [SerializeField] private ParticleSystem ps;
     [SerializeField] private Light lightSource;
-    [SerializeField] private Color defaultColor = Color.white;
-    [SerializeField] private Color warningColor = Color.yellow;
-    [SerializeField] private Color huntingColor = Color.red;
+    [SerializeField] private Color defaultColor;
+    [SerializeField] private Color warningColor;
+    [SerializeField] private Color huntingColor;
 
     [SerializeField] private float damageValue;
 
     public Action<EnemyState> OnStateChanged;
 
     private EnemyState currentState = EnemyState.calm;
+    private Dictionary<EnemyState, Color> statesColors = new Dictionary<EnemyState, Color>();
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        if (GameController.instance.paused) return;
+        statesColors.Add(EnemyState.calm, defaultColor);
+        statesColors.Add(EnemyState.warning, warningColor);
+        statesColors.Add(EnemyState.hunt, huntingColor);
+    }
+
+    private void Update()
+    {
+        if (GameController.instance.Paused) return;
 
         var playerPosition = PlayerCameraHolder.instance.transform.position;
         if (Vector3.Distance(playerPosition, transform.position) < warningDistance)
@@ -64,21 +71,8 @@ public class Enemy : MonoBehaviour
         OnStateChanged?.Invoke(currentState);
 
         var main = ps.main;
-        switch (state)
-        {
-            case EnemyState.calm:
-                main.startColor = defaultColor;
-                lightSource.color = defaultColor;
-                break;
-            case EnemyState.warning:
-                main.startColor = warningColor;
-                lightSource.color = warningColor;
-                break;
-            case EnemyState.hunt:
-                main.startColor = huntingColor;
-                lightSource.color = huntingColor;
-                break;
-        }
+        main.startColor = statesColors[state];
+        lightSource.color = statesColors[state];
     }
 
     protected void OnTriggerStay(Collider other)

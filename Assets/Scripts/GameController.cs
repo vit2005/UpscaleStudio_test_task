@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private AudioSource backgroundMusic;
 
     private bool _paused = false;
-    public bool paused => _paused;
+    public bool Paused => _paused;
 
     public void Awake()
     {

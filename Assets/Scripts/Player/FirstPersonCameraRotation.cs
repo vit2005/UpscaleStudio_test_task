@@ -6,14 +6,8 @@ using UnityEngine;
 /// </summary>
 public class FirstPersonCameraRotation : MonoBehaviour
 {
-    [SerializeField] private float sensitivity = 2f;
-    [SerializeField] private float yRotationLimit = 88f;
-
-    public float Sensitivity
-    {
-        get { return sensitivity; }
-        set { sensitivity = value; }
-    }
+    [SerializeField] private float sensitivity;
+    [SerializeField] private float yRotationLimit;
 
     private Vector2 rotation = Vector2.zero;
     private Quaternion _lastCalculatedRotation = Quaternion.identity;
@@ -24,7 +18,7 @@ public class FirstPersonCameraRotation : MonoBehaviour
 
     void Update()
     {
-        if (GameController.instance.paused)
+        if (GameController.instance.Paused)
         {
             transform.localRotation = _lastCalculatedRotation;
             return;

@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class MovementController : MonoBehaviour
 {
-    public float acceleration = 5f; // Прискорення корабля
-    public float maxSpeed = 20f; // Максимальна швидкість
-    public float deceleration = 2f; // Сповільнення при відсутності введення
+    [SerializeField] private float acceleration;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float deceleration;
 
     private Rigidbody rb;
     private Vector3 _velocity;
@@ -16,13 +16,8 @@ public class MovementController : MonoBehaviour
 
     public void Init()
     {
-        // Отримання компонента Rigidbody
         rb = GetComponent<Rigidbody>();
-
-        // Локування курсора в центрі екрана
         Cursor.lockState = CursorLockMode.Locked;
-
-        // Приховати курсор
         Cursor.visible = false;
     }
 
@@ -33,43 +28,36 @@ public class MovementController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Введення користувача
-        float inputVertical = Input.GetAxis("Vertical"); // W,S - вперед, назад
-        float inputHorizontal = Input.GetAxis("Horizontal"); // A,D - вліво, вправо
+        float inputTowards = Input.GetAxis("Vertical"); // W,S
+        float inputHorizontal = Input.GetAxis("Horizontal"); // A,D
         bool inputJump = Input.GetKey(KeyCode.Space);
         bool inputCrouch = Input.GetKey(KeyCode.LeftControl);
         bool speedUpInput = Input.GetKey(KeyCode.LeftShift);
-        float inputUp = inputJump && inputCrouch ? 0 : inputJump ? 1 : inputCrouch ? -1 : 0;
+        float inputVertical = inputJump && inputCrouch ? 0 : inputJump ? 1 : inputCrouch ? -1 : 0;
         float speedUp = speedUpInput ? 2f : 1f;
 
-        bool isMoving = !Mathf.Approximately(inputVertical, 0f) || !Mathf.Approximately(inputVertical, 0f) || inputJump || inputCrouch;
+        bool isMoving = !Mathf.Approximately(inputTowards, 0f) || !Mathf.Approximately(inputHorizontal, 0f) || inputJump || inputCrouch;
         if ((isMoving && !_isMoving) || (!isMoving && _isMoving)) OnMoving?.Invoke(isMoving);
         _isMoving = isMoving;
 
-        // Розрахунок напрямку руху
-        Vector3 forwardMovement = transform.forward * inputVertical;
+        Vector3 forwardMovement = transform.forward * inputTowards;
         Vector3 strafeMovement = transform.right * inputHorizontal;
-        Vector3 verticalMovement = transform.up * inputUp;
+        Vector3 verticalMovement = transform.up * inputVertical;
         Vector3 movementDirection = (forwardMovement + strafeMovement + verticalMovement).normalized;
 
         Vector3 desiredVelocity = movementDirection * maxSpeed * speedUp;
 
-        // Застосування швидкості до Rigidbody
-        if (movementDirection != Vector3.zero)
+        if (_isMoving)
         {
-            // Розрахунок сили для прискорення
             Vector3 force = (desiredVelocity - rb.velocity).normalized * acceleration;
             rb.AddForce(force, ForceMode.Acceleration);
         }
-        else
+        else if (rb.velocity.magnitude > 0)
         {
-            // Гальмування
-            if (rb.velocity.magnitude > 0)
-            {
-                Vector3 brakingForceVector = -rb.velocity * deceleration;
-                rb.AddForce(brakingForceVector);
-            }
+            Vector3 brakingForceVector = -rb.velocity * deceleration;
+            rb.AddForce(brakingForceVector);
         }
+
         _velocity = rb.velocity;
     }
 }

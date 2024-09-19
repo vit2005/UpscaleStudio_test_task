@@ -20,22 +20,19 @@ public class PopUp : MonoBehaviour
     private const string DEFEAT = "DEFEAT";
     private const string PAUSE = "PAUSE";
 
+    private Dictionary<PopUpType, string> _titles = new Dictionary<PopUpType, string>();
+
+    private void Awake()
+    {
+        _titles.Add(PopUpType.Victory, VICTORY);
+        _titles.Add(PopUpType.Defeat, DEFEAT);
+        _titles.Add(PopUpType.Pause, PAUSE);
+        gameObject.SetActive(false);
+    }
+
     public void Init(PopUpType type)
     {
-        switch (type)
-        {
-            case PopUpType.Victory:
-                title.text = VICTORY;
-                break;
-            case PopUpType.Defeat:
-                title.text = DEFEAT;
-                break;
-            case PopUpType.Pause:
-                title.text = PAUSE;
-                break;
-            default:
-                break;
-        }
+        title.text = _titles[type];
 
         resumeButton.SetActive(false);
         restartButton.SetActive(false);

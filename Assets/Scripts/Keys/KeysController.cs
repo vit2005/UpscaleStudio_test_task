@@ -9,25 +9,24 @@ public class KeyController : MonoBehaviour
     public static KeyController instance => _instance;
 
     [SerializeField] private GameObject keyPrefab;
-    [SerializeField] private int keysCount; // кількість ключів
+    [SerializeField] private int maxKeysCount;
 
     public Action<int> OnCountChanged;
 
     private int _keysCount;
     private List<GameObject> keys = new List<GameObject>();
 
-
     public void Init()
     {
         _instance = this;
-        _keysCount = keysCount;
+        _keysCount = maxKeysCount;
         OnCountChanged?.Invoke(_keysCount);
     }
 
     public void SpawnKeys(List<Vector3> freePlaces, Transform parent)
     {
         freePlaces.Shuffle();
-        for (int i = 0; i < keysCount; i++)
+        for (int i = 0; i < maxKeysCount; i++)
         {
             var position = new Vector3(freePlaces[i].x, freePlaces[i].y, freePlaces[i].z);
             var rotation = Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f);

@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class EnemiesController : MonoBehaviour
 {
-    private static EnemiesController _instance;
-    public static EnemiesController instance => _instance;
-
-    public GameObject enemyPrefab;
-    public float enemiesCount = 10; // кількість ворогів
-
-    public void Awake()
-    {
-        _instance = this;
-    }
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private float enemiesCount;
 
     public void SpawnEnemies(List<Vector3> freePlaces, Transform parent)
     {
